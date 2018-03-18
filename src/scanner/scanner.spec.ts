@@ -9,31 +9,34 @@ describe("Scanner", () => {
         it("should return a,b,c", () => {
             let scanner = new Scanner("abc");
 
-            expect(scanner.current()).to.equal("a");
+            expect(scanner.currentSymbol.getValue()).to.equal("a");
             scanner.moveToNext();
-            expect(scanner.current()).to.equal("b");
+            expect(scanner.currentSymbol.getValue()).to.equal("b");
             scanner.moveToNext();
-            expect(scanner.current()).to.equal("c");
+            expect(scanner.currentSymbol.getValue()).to.equal("c");
             scanner.moveToNext();
-            expect(scanner.current()).to.equal(undefined);
+            expect(scanner.currentSymbol).to.be.undefined;
         });
     })
 
     describe("getToken", () => {
-        it("should return '23' when 23+2", () => {
+        it("should return '23' for 23+2", () => {
             let scanner = new Scanner("23+2");
-
-            expect(scanner.getToken()).to.equal("23");
+            expect(scanner.getToken().value).to.equal("23");
 
         });
 
-        it("should return '+' after second getToken when 23+2", () => {
+        it("should return '+' as second getToken for 23+2", () => {
             let scanner = new Scanner("23        +2");
             scanner.getToken();
-            expect(scanner.getToken()).to.equal("+");
+            expect(scanner.getToken().value).to.equal("+");
 
         });
 
-
+        it("tokenize() should return ['23', '+', '2'] for 23+2", () => {
+            let scanner = new Scanner("23+2");
+            let tokens = scanner.tokenize();
+            expect(tokens.map(token => token.value)).to.contain.ordered.members(["23", "+", "2"]);
+        });
     })
 });
