@@ -1,5 +1,15 @@
-type TokenType = "Number" | "PlusSign"
+type TokenType =
+    "Literal"
+    | "Number"
+    | "Operator"
+    | "LeftParenthesis"
+    | "RightParenthesis"
+    | "EOF"
 
 export class Token {
-    constructor(private type: TokenType, private value: string | undefined) { }
+    constructor(public type: TokenType, public value: string | null) { }
+
+    toString(): string {
+        return `(${this.type}) => ${this.value}`
+    }
 }
