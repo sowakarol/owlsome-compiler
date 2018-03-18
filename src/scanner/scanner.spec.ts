@@ -33,10 +33,18 @@ describe("Scanner", () => {
 
         });
 
-        it("tokenize() should return ['23', '+', '2'] for 23+2", () => {
+        it("tokenize() should return tokens ['23', '+', '2'] for 23+2", () => {
             let scanner = new Scanner("23+2");
             let tokens = scanner.tokenize();
             expect(tokens.map(token => token.value)).to.contain.ordered.members(["23", "+", "2"]);
+        });
+
+        it("tokenize() should return tokens: [23, +, (, 2, -, 9, *, qwerty666, )] for 23+(2-9*qwerty666)", () => {
+            let scanner = new Scanner("23+(2-9*qwerty666)");
+            let tokens = scanner.tokenize();
+            expect(tokens.map(token => token.value))
+                .to.contain.ordered
+                .members(["23", "+", "(", "2", "-", "9", "*", "qwerty666", ")"]);
         });
     })
 });
