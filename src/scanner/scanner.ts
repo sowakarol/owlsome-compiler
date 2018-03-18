@@ -1,4 +1,4 @@
-import { Token } from "../Token";
+import { Token, TokenType } from "../Token";
 
 
 class Symbol {
@@ -44,7 +44,7 @@ export class Scanner {
     tokenize(): Token[] {
         let tokens = new Array<Token>();
         let token = this.getToken();
-        while (token.type !== "EOF") {
+        while (token.type !== TokenType.EOF) {
             tokens.push(token);
             token = this.getToken();
         }
@@ -57,7 +57,7 @@ export class Scanner {
         if (this.currentSymbol !== undefined) {
             token = this.extractToken();
         } else {
-            token = new Token("EOF", null);
+            token = new Token(TokenType.EOF, null);
         }
 
         this.moveToNext();
@@ -73,20 +73,19 @@ export class Scanner {
             return this.getToken();
         }
         else {
-            // literal
             tokenString += this.currentSymbol.getValue();
             if (this.currentSymbol.isLetter()) {
                 tokenString += this.extractLiteral();
-                token = new Token("Literal", tokenString);
+                token = new Token(TokenType.Literal, tokenString);
             } else if (this.currentSymbol.isDigit()) {
                 tokenString += this.extractNumber();
-                token = new Token("Number", tokenString);
+                token = new Token(TokenType.Number, tokenString);
             } else if (this.currentSymbol.isOperator()) {
-                token = new Token("Operator", this.currentSymbol.getValue());
+                token = new Token(TokenType.Operator, this.currentSymbol.getValue());
             } else if (this.currentSymbol.isLeftParenthesis()) {
-                token = new Token("LeftParenthesis", this.currentSymbol.getValue());
+                token = new Token(TokenType.LeftParenthesis, this.currentSymbol.getValue());
             } else if (this.currentSymbol.isRightParenthesis()) {
-                token = new Token("RightParenthesis", this.currentSymbol.getValue());
+                token = new Token(TokenType.RightParenthesis, this.currentSymbol.getValue());
             } else {
                 throw new Error("unexpected symbol");
             }
