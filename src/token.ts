@@ -4,13 +4,20 @@ export enum TokenType {
     Operator,
     LeftParenthesis,
     RightParenthesis,
+    For,
+    While,
+    If,
+    EqualOperator,
+    AssignOperator,
+    SingleLineComment,
+    EOF,
     NotSupported
 };
 
 export function tokenTypeLength(): number {
     let length: number = 0;
     for (let type in TokenType) {
-        let number = Number(type); 
+        let number = Number(type);
         if (!isNaN(number)) {
             length++;
         }
