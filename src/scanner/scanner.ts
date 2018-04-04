@@ -8,6 +8,7 @@ class Symbol {
 
     public isLetter = () => /[a-z]/i.test(this.value);
     public isDigit = () => /\d/.test(this.value);
+    public isDot = () => /\./.test(this.value);
     public isLeftParenthesis = () => this.value === '(';
     public isRightParenthesis = () => this.value === ')';
     public isLeftBracket = () => this.value === '[';
@@ -104,7 +105,14 @@ export class Scanner {
 
     extractNumber(): string {
         let number = "";
-        while (this.nextSymbol && this.nextSymbol.isDigit()) {
+        let dotOccurences = 0;
+        while (this.nextSymbol && (this.nextSymbol.isDigit() || this.nextSymbol.isDot())) {
+            if (this.nextSymbol.isDot()) {
+                dotOccurences++;
+            }
+            if (dotOccurences > 1) {
+                throw new Error("More than one dot in a number");
+            }
             number += this.nextSymbol.getValue();
             this.moveToNext();
         }

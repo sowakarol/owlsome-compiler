@@ -1,8 +1,7 @@
 import { expect } from "chai";
 import * as mocha from "mocha";
 import { Scanner } from "./scanner";
-
-
+import { TokenType } from "../token";
 
 describe("Scanner", () => {
     describe("NextIndex", () => {
@@ -32,19 +31,33 @@ describe("Scanner", () => {
             expect(scanner.getToken().value).to.equal("+");
 
         });
+    })
 
-        it("tokenize() should return tokens ['23', '+', '2'] for 23+2", () => {
+    describe("tokenize()", () => {
+        it("should return tokens ['23', '+', '2'] for 23+2", () => {
             let scanner = new Scanner("23+2");
             let tokens = scanner.tokenize();
             expect(tokens.map(token => token.value)).to.contain.ordered.members(["23", "+", "2"]);
         });
 
-        it("tokenize() should return tokens: [23, +, (, 2, -, 9, *, qwerty666, )] for 23+(2-9*qwerty666)", () => {
+        it("should return tokens: [23, +, (, 2, -, 9, *, qwerty666, )] for 23+(2-9*qwerty666)", () => {
             let scanner = new Scanner("23+(2-9*qwerty666)");
             let tokens = scanner.tokenize();
             expect(tokens.map(token => token.value))
                 .to.contain.ordered
                 .members(["23", "+", "(", "2", "-", "9", "*", "qwerty666", ")"]);
         });
+
+        it("should scan a dot delimited number", () => {
+            let tokens = new Scanner("123.45").tokenize();
+            expect(tokens).to.have.length(1);            
+            expect(tokens[0].type).to.equal(TokenType.Number);            
+            expect(tokens[0].value).to.equal("123.45");            
+        })
+
+        it("should throw error if there's more than one dot", () => {
+            let scanner = new Scanner("123..45");
+            expect(() => scanner.tokenize()).to.throw();
+        })
     })
 });
