@@ -88,7 +88,7 @@ export class Scanner {
             } else if (this.currentSymbol.isRightParenthesis()) {
                 token = new Token(TokenType.RightParenthesis, this.currentSymbol.getValue());
             } else {
-                throw new Error("unexpected symbol");
+                token = new Token(TokenType.NotSupported, tokenString);
             }
         }
         return token;

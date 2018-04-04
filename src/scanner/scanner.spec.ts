@@ -29,8 +29,13 @@ describe("Scanner", () => {
             let scanner = new Scanner("23        +2");
             scanner.getToken();
             expect(scanner.getToken().value).to.equal("+");
-
         });
+
+        it("should return NotSupported token type, if token is not supperted", () => {
+            let scanner = new Scanner("~");
+            let tokens = scanner.tokenize();
+            expect(tokens[0].type).to.equal(TokenType.NotSupported);
+        })
     })
 
     describe("tokenize()", () => {
@@ -50,9 +55,9 @@ describe("Scanner", () => {
 
         it("should scan a dot delimited number", () => {
             let tokens = new Scanner("123.45").tokenize();
-            expect(tokens).to.have.length(1);            
-            expect(tokens[0].type).to.equal(TokenType.Number);            
-            expect(tokens[0].value).to.equal("123.45");            
+            expect(tokens).to.have.length(1);
+            expect(tokens[0].type).to.equal(TokenType.Number);
+            expect(tokens[0].value).to.equal("123.45");
         })
 
         it("should throw error if there's more than one dot", () => {
