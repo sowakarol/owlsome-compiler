@@ -68,7 +68,7 @@ export class BetterScanner {
     scanUntilEOL(): string {
         let line = "";
         let char = this.text[this.index];
-        while (char !== '\n') {
+        while (char !== '\n' && char != null) {
             line += char;
             char = this.text[++this.index];
         }        
