@@ -1,5 +1,6 @@
 import { existsSync, readFile, writeFile } from "fs";
 import { Scanner } from "./scanner/scanner";
+import { HTMLGenerator } from "./html-generator/html-generator";
 
 const OWL_EXTENSION = "owl";
 
@@ -10,11 +11,11 @@ process.argv.slice(2).forEach((filename: string) => {
         readFile(filename, (err, content) => {
 
             let scanner = new Scanner(content.toString());
-            const outputFileName = filename.substr(0, filename.lastIndexOf('.')) + ".tokens";
-
-            //TODO: replace with generated html
+            const outputFileName = filename.substr(0, filename.lastIndexOf('.')) + ".html";
+            const htmlGenerator = new HTMLGenerator();
+            const htmlPage = htmlGenerator.generatePage(scanner.tokenize());
             writeFile(outputFileName
-                , scanner.tokenize().map(token => token.value).join("\n")
+                , htmlPage
                 , err => err ? console.log(`uopsssss! \n ${err}`) : console.log(`[${filename}] tokens extracted`));
         })
     } else {

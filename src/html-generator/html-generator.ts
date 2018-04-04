@@ -51,7 +51,4 @@ export class HTMLGenerator {
                 <div style="color: #${colorHex};"> ${token.value} </div>
             `;
     }
-
-
-
 }
