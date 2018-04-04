@@ -1,22 +1,22 @@
-import {Token,TokenType, tokenTypeLength} from "../token"
+import { Token, TokenType, tokenTypeLength } from "../token"
 
-export class HTMLGenerator{
-    private map:Map<number, number>;
+export class HTMLGenerator {
+    private map: Map<number, number>;
 
-    constructor(){
-        this.map = new Map<TokenType,number>();
-        
-        let difference:number = parseInt("0xffffff") / tokenTypeLength();
+    constructor() {
+        this.map = new Map<TokenType, number>();
 
-        for(let type in TokenType){
-            let number = Number(type); 
-            if(!isNaN(number)){
-                this.map.set(number ,Math.floor(number * difference));
+        let difference: number = parseInt("0xffffff") / tokenTypeLength();
+
+        for (let type in TokenType) {
+            let number = Number(type);
+            if (!isNaN(number)) {
+                this.map.set(number, Math.floor(number * difference));
             }
         }
     }
 
-    generatePage(tokens: Token[]): string{
+    generatePage(tokens: Token[]): string {
         let page: string;
         page = this.generateHeader();
 
@@ -28,22 +28,22 @@ export class HTMLGenerator{
         return page;
     }
 
-    generateHeader():string{
+    generateHeader(): string {
         return ` 
         <html>
             <body>`;
     }
 
-    generateFooter():string{
-        return  ` 
+    generateFooter(): string {
+        return ` 
            </body>
         </html>`
     }
 
-    generateDiv(token:Token):string{
-        let colorHex:string = "000000";
+    generateDiv(token: Token): string {
+        let colorHex: string = "000000";
         let tokenNumber = this.map.get(token.type);
-        if(tokenNumber){
+        if (tokenNumber) {
             colorHex = tokenNumber.toString(16);
         }
 
