@@ -12,12 +12,9 @@ var count: ((str: string, separator: string) => number) =
 
 var getColors: ((str: string) => string[]) =
     (str: string) => {
-        console.log(str);
         let colors: string[] = [];
         let fragments: string[] = str.split('#').splice(1);
-        console.log(fragments);
         for (let color of fragments) {
-            console.log(color);
             colors.push(color.substring(1, 6));
         }
         return colors;
@@ -55,6 +52,4 @@ describe("HtmlGenerator", () => {
             assert(page.indexOf(htmlTag) >= 0);
         })
     })
-
-
 });
