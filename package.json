@@ -4,6 +4,8 @@
   "description": "Compiler written to owl language",
   "main": "index.js",
   "scripts": {
+    "prestart": "tsc",
+    "start": "node out/cli.js test.owl",
     "test": "mocha --require ts-node/register src/**/*.spec.ts",
     "test:watch": "nodemon --config nodemon.spec.json"
   },
