@@ -7,6 +7,17 @@ export enum TokenType {
     EOF
 };
 
+export function tokenTypeLength():number{
+    let length:number = 0;
+    for(let type in TokenType){
+        let number = Number(type); 
+        if(!isNaN(number)){
+            length++;
+        }
+    }
+    return length;
+}
+
 export class Token {
     constructor(public type: TokenType, public value: string | null) { }
 
