@@ -1,7 +1,13 @@
 export enum TokenType {
     Literal,
     Number,
-    Operator,
+    OperatorPlus,
+    OperatorMinus,
+    OperatorMultiplication,
+    OperatorObelus,
+    OperatorExponentiation,
+    OperatorIncrementation,
+    OperatorDecrementation,
     LeftParenthesis,
     RightParenthesis,
     For,
@@ -11,7 +17,8 @@ export enum TokenType {
     AssignOperator,
     SingleLineComment,
     EOF,
-    NotSupported
+    NotSupported,
+    Operator //to be refactored - stays to avoid compilation problems
 };
 
 export function tokenTypeLength(): number {

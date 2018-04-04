@@ -3,9 +3,9 @@ import * as mocha from "mocha";
 import { HTMLGenerator } from "./html-generator";
 import { Token, TokenType } from '../token'
 
-const openingDivTag = "<div";
+const openingSpanTag = "<span";
 const htmlTag = "html";
-const closingDivTag = "</div>"
+const closingSpanTag = "</span>"
 
 var count: ((str: string, separator: string) => number) =
     (str: string, separator: string) => str.split(separator).length - 1;
@@ -26,7 +26,7 @@ describe("HtmlGenerator", () => {
         it("Should return empty page = es sollte eine leere Webseite zurückgeben", () => {
             let generator = new HTMLGenerator();
             let page: string = generator.generatePage([]);
-            assert(page.indexOf(openingDivTag) < 0);
+            assert(page.indexOf(openingSpanTag) < 0);
             assert(page.indexOf(htmlTag) >= 0);
         })
     })
@@ -35,8 +35,8 @@ describe("HtmlGenerator", () => {
         it("Should return page with one div = es sollte eine Webseite mit ein div zurückgeben", () => {
             let generator = new HTMLGenerator();
             let page: string = generator.generatePage([new Token(TokenType.Number, '12')]);
-            assert(count(page, openingDivTag) == 1);
-            assert(count(page, closingDivTag) == 1);
+            assert(count(page, openingSpanTag) == 1);
+            assert(count(page, closingSpanTag) == 1);
             assert(page.indexOf(htmlTag) >= 0);
         })
     })
@@ -45,8 +45,8 @@ describe("HtmlGenerator", () => {
         it("Should return page with two divs - different colors = es sollte eine Webseite mit zwei divs zurückgeben - anderen Farben", () => {
             let generator = new HTMLGenerator();
             let page: string = generator.generatePage([new Token(TokenType.Number, '12'), new Token(TokenType.Literal, "aaa")]);
-            assert(count(page, openingDivTag) == 2);
-            assert(count(page, closingDivTag) == 2);
+            assert(count(page, openingSpanTag) == 2);
+            assert(count(page, closingSpanTag) == 2);
             let colors: string[] = getColors(page);
             assert(colors[0] != colors[1]);
             assert(page.indexOf(htmlTag) >= 0);

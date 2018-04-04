@@ -22,6 +22,31 @@ export class BetterScanner {
                     this.index++;
                     break;
                 case /[a-z]/i.test(char):
+                    var isKeyWord = false;
+                    //QUICK VERSION - NEEDS REFACTOR
+                    if(char === 'i'){
+                        tokenString = char;
+                        if (this.isNextSymbolEqual('f')) {
+                            tokenString += this.text[++this.index];
+                            tokens.push(new Token(TokenType.If, tokenString));
+                            isKeyWord = true;
+                        }
+                        this.index++;
+                        if(isKeyWord) break;
+                    } else if (char === 'f'){
+                        tokenString = char;
+                        if (this.isNextSymbolEqual('o')) {
+                            tokenString += this.text[++this.index];
+                            if (this.isNextSymbolEqual('r')) {
+                                tokenString += this.text[++this.index];
+                                tokens.push(new Token(TokenType.For, tokenString));
+                                isKeyWord = true;            
+                            }
+                        }
+                        this.index++;
+                        if (isKeyWord) break;
+                    }
+
                     tokenString += this.extractLiteral();
                     tokens.push(new Token(TokenType.Literal, tokenString));
                     break;
@@ -43,14 +68,39 @@ export class BetterScanner {
                         tokens.push(new Token(TokenType.SingleLineComment, `${line}`));
                     }
                     else {
-                        tokens.push(new Token(TokenType.Operator, char));
+                        tokens.push(new Token(TokenType.OperatorObelus, char));
+                    }
+                    this.index++;
+                    break;
+                case char ==='^':
+                    tokens.push(new Token(TokenType.OperatorExponentiation, char));
+                    this.index++;
+                    break;
+
+                case char === '+':
+                    if (this.isNextSymbolEqual('+')) {
+                        tokenString = char + this.text[++this.index];
+                        tokens.push(new Token(TokenType.OperatorIncrementation, tokenString));
+                    }
+                    else {
+                        tokens.push(new Token(TokenType.OperatorPlus, char));
                     }
                     this.index++;
                     break;
 
+                case char === '-':
+                    if (this.isNextSymbolEqual('-')) {
+                        tokenString = char + this.text[++this.index];
+                        tokens.push(new Token(TokenType.OperatorDecrementation, tokenString));
+                    }
+                    else {
+                        tokens.push(new Token(TokenType.OperatorMinus, char));
+                    }
+                    this.index++;
+                    break;
 
-                case /\+|-|\*|\^/.test(char):
-                    tokens.push(new Token(TokenType.Operator, char));
+                case char === '*':
+                    tokens.push(new Token(TokenType.OperatorMultiplication, char));
                     this.index++;
                     break;
                 case char === '=':
