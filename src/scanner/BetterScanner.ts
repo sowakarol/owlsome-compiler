@@ -28,8 +28,10 @@ export class BetterScanner {
                         tokenString = char;
                         if (this.isNextSymbolEqual('f')) {
                             tokenString += this.text[++this.index];
-                            tokens.push(new Token(TokenType.If, tokenString));
-                            isKeyWord = true;
+                            isKeyWord = this.isNextSymbolEqual(' ');
+                            if (isKeyWord) {
+                                tokens.push(new Token(TokenType.If, tokenString));
+                            }
                         }
                         this.index++;
                         if (isKeyWord) break;
@@ -39,8 +41,10 @@ export class BetterScanner {
                             tokenString += this.text[++this.index];
                             if (this.isNextSymbolEqual('r')) {
                                 tokenString += this.text[++this.index];
-                                tokens.push(new Token(TokenType.For, tokenString));
-                                isKeyWord = true;
+                                isKeyWord = this.isNextSymbolEqual(' ');
+                                if (isKeyWord) {
+                                    tokens.push(new Token(TokenType.For, tokenString));
+                                }
                             }
                         }
                         this.index++;
@@ -55,8 +59,10 @@ export class BetterScanner {
                                     tokenString += this.text[++this.index];
                                     if (this.isNextSymbolEqual('e')) {
                                         tokenString += this.text[++this.index];
-                                        tokens.push(new Token(TokenType.While, tokenString));
-                                        isKeyWord = true;
+                                        isKeyWord = this.isNextSymbolEqual(' ');
+                                        if (isKeyWord) {
+                                            tokens.push(new Token(TokenType.While, tokenString));
+                                        }
                                     }
                                 }
                             }
