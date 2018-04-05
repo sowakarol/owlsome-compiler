@@ -187,7 +187,7 @@ export class BetterScanner {
         this.index++;
         if (nextChar === '=') {
             this.index++;
-            if (/[a-z]|\d|\(/.test(nextNextChar)) {
+            if (/[a-z]|\d|\(|\s/.test(nextNextChar)) {
                 return new Token(TokenType.EqualOperator, currentChar + nextChar);
             } else {
                 this.index++;
