@@ -20,9 +20,9 @@ export class HTMLGenerator {
         let page: string;
         page = this.generateHeader();
 
-        page += `<div>`;
+        page += `<div style="width:100%;>`;
         tokens.forEach(token => {
-            page += `<span style="margin: 1.5px">${this.generateDiv(token)}</span>`;
+            page += `<span style="margin: 1.5px;">${this.generateDiv(token)}</span>`;
         });
         page += `</div>`
         page += this.generateTokenTable();
@@ -39,11 +39,12 @@ export class HTMLGenerator {
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
             </head>
-            <body>`;
+            <body>
+            <div style="width:100%;">`;
     }
 
     generateFooter(): string {
-        return ` 
+        return `</div> 
            </body>
         </html>`
     }
@@ -54,6 +55,10 @@ export class HTMLGenerator {
             return `
             <span style="text-decoration: underline wavy red;"> ${token.value} </span>
             `;
+        }
+
+        if (token.type === TokenType.String) {
+            console.log(token);
         }
 
         let tokenNumber = this.map.get(token.type);
@@ -89,6 +94,8 @@ export class HTMLGenerator {
             "')'": "RightParenthesis",
             "'for'": "For",
             "'while'": "While",
+            '"{*}"': "String",
+            "'var'": "Variable",
             "'if'": "If",
             "'=='": "EqualOperator",
             "'='": "AssignOperator",

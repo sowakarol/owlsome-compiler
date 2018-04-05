@@ -23,7 +23,7 @@ export class BetterScanner {
                     break;
                 case /[a-z]/i.test(char):
                     var isKeyWord = false;
-                    //QUICK VERSION - NEEDS REFACTOR
+                    //QUICK VERSION - NEEDS REFACTOR !!
                     if (char === 'i') {
                         tokenString = char;
                         if (this.isNextSymbolEqual('f')) {
@@ -69,6 +69,20 @@ export class BetterScanner {
                         }
                         this.index++;
                         if (isKeyWord) break;
+                    } else if (char === 'v') {
+                            tokenString = char;
+                            if (this.isNextSymbolEqual('a')) {
+                                tokenString += this.text[++this.index];
+                                if (this.isNextSymbolEqual('r')) {
+                                    tokenString += this.text[++this.index];
+                                    isKeyWord = this.isNextSymbolEqual(' ');
+                                    if (isKeyWord) {
+                                        tokens.push(new Token(TokenType.Variable, tokenString));
+                                    }
+                                }
+                            }
+                            this.index++;
+                            if (isKeyWord) break; 
                     }
 
                     tokenString += this.extractLiteral();
@@ -130,6 +144,10 @@ export class BetterScanner {
                 case char === '=':
                     tokens.push(this.scanEqualSigns());
                     break;
+                case char === '"':
+                    tokens.push(this.scanString());
+                    this.index++;
+                    break;
                 default:
                     tokens.push(new Token(TokenType.NotSupported, char));
                     this.index++;
@@ -137,6 +155,23 @@ export class BetterScanner {
             }
         }
         return tokens;
+    }
+
+    scanString(): Token {
+        let token: Token;
+        let quotedString = '"';
+        let char = this.text[++this.index];
+        let closingCharFound = false;
+        do {
+            quotedString += char;
+            if (char === '"') {
+                closingCharFound = true;
+                return new Token(TokenType.String, quotedString)
+            }
+            char = this.text[++this.index];
+        } while (char != null || char != '"')
+        token = new Token(TokenType.NotSupported, quotedString);
+        return token;
     }
 
     scanUntilEOL(): string {
@@ -177,7 +212,7 @@ export class BetterScanner {
             char = this.text[++this.index];
         }
         if (dotOccurences > 1) {
-            token = new Token(TokenType.NotSupported, tokenString); 
+            token = new Token(TokenType.NotSupported, tokenString);
         } else {
             token = new Token(TokenType.Number, tokenString);
         }

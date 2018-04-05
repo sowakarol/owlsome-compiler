@@ -18,6 +18,8 @@ export enum TokenType {
     SingleLineComment,
     EOF,
     NotSupported,
+    String,
+    Variable,
     Operator //to be refactored - stays to avoid compilation problems
 };
 
