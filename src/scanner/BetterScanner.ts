@@ -24,7 +24,7 @@ export class BetterScanner {
                 case /[a-z]/i.test(char):
                     var isKeyWord = false;
                     //QUICK VERSION - NEEDS REFACTOR
-                    if(char === 'i'){
+                    if (char === 'i') {
                         tokenString = char;
                         if (this.isNextSymbolEqual('f')) {
                             tokenString += this.text[++this.index];
@@ -32,15 +32,33 @@ export class BetterScanner {
                             isKeyWord = true;
                         }
                         this.index++;
-                        if(isKeyWord) break;
-                    } else if (char === 'f'){
+                        if (isKeyWord) break;
+                    } else if (char === 'f') {
                         tokenString = char;
                         if (this.isNextSymbolEqual('o')) {
                             tokenString += this.text[++this.index];
                             if (this.isNextSymbolEqual('r')) {
                                 tokenString += this.text[++this.index];
                                 tokens.push(new Token(TokenType.For, tokenString));
-                                isKeyWord = true;            
+                                isKeyWord = true;
+                            }
+                        }
+                        this.index++;
+                        if (isKeyWord) break;
+                    } else if (char === 'w') {
+                        tokenString += char;
+                        if (this.isNextSymbolEqual('h')) {
+                            tokenString += this.text[++this.index];
+                            if (this.isNextSymbolEqual('i')) {
+                                tokenString += this.text[++this.index];
+                                if (this.isNextSymbolEqual('l')) {
+                                    tokenString += this.text[++this.index];
+                                    if (this.isNextSymbolEqual('e')) {
+                                        tokenString += this.text[++this.index];
+                                        tokens.push(new Token(TokenType.While, tokenString));
+                                        isKeyWord = true;
+                                    }
+                                }
                             }
                         }
                         this.index++;
@@ -72,7 +90,7 @@ export class BetterScanner {
                     }
                     this.index++;
                     break;
-                case char ==='^':
+                case char === '^':
                     tokens.push(new Token(TokenType.OperatorExponentiation, char));
                     this.index++;
                     break;
@@ -121,7 +139,7 @@ export class BetterScanner {
         while (char !== '\n' && char != null) {
             line += char;
             char = this.text[++this.index];
-        }        
+        }
         return line;
     }
 
