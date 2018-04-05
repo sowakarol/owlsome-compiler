@@ -75,8 +75,8 @@ export class BetterScanner {
                     tokens.push(new Token(TokenType.Literal, tokenString));
                     break;
                 case /\d/.test(char):
-                    tokenString += this.extractNumber();
-                    tokens.push(new Token(TokenType.Number, tokenString));
+                    token = this.extractNumber();
+                    tokens.push(token);
                     break;
                 case char === '(':
                     tokens.push(new Token(TokenType.LeftParenthesis, char));
@@ -164,17 +164,22 @@ export class BetterScanner {
         return token;
     }
 
-    extractNumber(): string {
-        let token = "";
+    extractNumber(): Token {
+        let token: Token;
+        let tokenString = "";
         let dotOccurences = 0;
         let char = this.text[this.index];
         while (char && /\d|\./.test(char)) {
-            if (char == '.' && ++dotOccurences > 1) {
-                throw new Error("More than one dot in a number!");
-            } else {
-                token += char;
-                char = this.text[++this.index];
+            if (char == '.') {
+                dotOccurences++;
             }
+            tokenString += char;
+            char = this.text[++this.index];
+        }
+        if (dotOccurences > 1) {
+            token = new Token(TokenType.NotSupported, tokenString); 
+        } else {
+            token = new Token(TokenType.Number, tokenString);
         }
         return token;
     }
