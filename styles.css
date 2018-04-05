@@ -1,0 +1,13 @@
+div {
+	width: 49%;
+	padding: 15px;
+    display: inline-block;
+}
+
+span {
+    vertical-align: middle;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}

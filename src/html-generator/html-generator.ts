@@ -20,10 +20,12 @@ export class HTMLGenerator {
         let page: string;
         page = this.generateHeader();
 
+        page += `<div>`;
         tokens.forEach(token => {
             page += `<span style="margin: 1.5px">${this.generateDiv(token)}</span>`;
         });
-
+        page += `</div>`
+        page += this.generateTokenTable();
         page += this.generateFooter();
         return page;
     }
@@ -31,6 +33,12 @@ export class HTMLGenerator {
     generateHeader(): string {
         return ` 
         <html>
+            <head>
+            <link rel="stylesheet" href="styles.css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+            </head>
             <body>`;
     }
 
@@ -42,7 +50,7 @@ export class HTMLGenerator {
 
     generateDiv(token: Token): string {
         let colorHex: string = "000000";
-        if(token.type === TokenType.NotSupported){
+        if (token.type === TokenType.NotSupported) {
             return `
             <span style="text-decoration: underline wavy red;"> ${token.value} </span>
             `;
@@ -51,15 +59,54 @@ export class HTMLGenerator {
         let tokenNumber = this.map.get(token.type);
         if (tokenNumber) {
             colorHex = tokenNumber.toString(16);
-        }        
-        if(colorHex <= "800000"){
+        }
+        if (colorHex <= "800000") {
             return `
             <span style="background-color: #${colorHex}; color: #ffffff"> ${token.value} </span>
-            `;            
+            `;
         }
 
         return `
                 <span style="background-color: #${colorHex};"> ${token.value} </span>
             `;
+    }
+
+    generateTokenTable(): string {
+
+        const tokenTable: any = {
+            "z{z}": "Literal",
+            "z": "'a'...'Z'",
+            "c{c}[.]c{c}": "Number",
+            "c": "'0'...'9'",
+            "'+'": "OperatorPlus",
+            "'-'": "OperatorMinus",
+            "'*'": "OperatorMultiplication",
+            "'/'": "OperatorObelus",
+            "'^'": "OperatorExponentiation",
+            "'++'": "OperatorIncrementation",
+            "'--'": "OperatorDecrementation",
+            "'('": "LeftParenthesis",
+            "')'": "RightParenthesis",
+            "'for'": "For",
+            "'while'": "While",
+            "'if'": "If",
+            "'=='": "EqualOperator",
+            "'='": "AssignOperator",
+            "'//'": "SingleLineComment",
+            "'EOF'": "EOF",
+            "other": "NotSupported"
+
+        }
+
+        let html = `<div><table>`;
+
+        for (const key in tokenTable) {
+            if (tokenTable.hasOwnProperty(key)) {
+                const desc = tokenTable[key];
+                html += `<tr><td>${key}</td><td>${desc}</td></tr>`
+            }
+        }
+        html += `</table></div>`
+        return html;
     }
 }
