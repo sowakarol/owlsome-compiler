@@ -21,7 +21,7 @@ export class HTMLGenerator {
         page = this.generateHeader();
 
         tokens.forEach(token => {
-            page += this.generateDiv(token);
+            page += `<span style="margin: 1.5px">${this.generateDiv(token)}</span>`;
         });
 
         page += this.generateFooter();
