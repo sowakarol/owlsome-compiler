@@ -44,14 +44,14 @@ export class HTMLGenerator {
         let colorHex: string = "000000";
         if(token.type === TokenType.NotSupported){
             return `
-            <span style="text-decoration: underline overline wavy red;> ${token.value} </span>
+            <span style="text-decoration: underline wavy red;"> ${token.value} </span>
             `;
         }
 
         let tokenNumber = this.map.get(token.type);
         if (tokenNumber) {
             colorHex = tokenNumber.toString(16);
-        }
+        }        
         if(colorHex <= "800000"){
             return `
             <span style="background-color: #${colorHex}; color: #ffffff"> ${token.value} </span>
