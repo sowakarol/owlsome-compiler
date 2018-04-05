@@ -89,7 +89,8 @@ describe("Better scanner", () => {
 
     it("should throw error if there's more than one dot in a number", () => {
         let s = new BetterScanner("123..45");
-        expect(() => s.tokenize()).to.throw();
+        let tokens = s.tokenize();
+        expect(tokens[0].type).to.equal(TokenType.NotSupported);
     })
 
     describe("tokenize()", () => {

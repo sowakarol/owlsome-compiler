@@ -22,7 +22,7 @@ export class HTMLGenerator {
 
         page += `<div style="width:100%;>`;
         tokens.forEach(token => {
-            page += `<span style="margin: 1.5px;">${this.generateDiv(token)}</span>`;
+            page += `${this.generateSpan(token)}`;
         });
         page += `</div>`
         page += this.generateTokenTable();
@@ -49,11 +49,11 @@ export class HTMLGenerator {
         </html>`
     }
 
-    generateDiv(token: Token): string {
+    generateSpan(token: Token): string {
         let colorHex: string = "000000";
         if (token.type === TokenType.NotSupported) {
             return `
-            <span style="text-decoration: underline wavy red;"> ${token.value} </span>
+            <span style="text-decoration: underline wavy red; margin: 1.5px;"> ${token.value} </span>
             `;
         }
 
@@ -67,12 +67,12 @@ export class HTMLGenerator {
         }
         if (colorHex <= "800000") {
             return `
-            <span style="background-color: #${colorHex}; color: #ffffff"> ${token.value} </span>
+            <span style="background-color: #${colorHex}; margin: 1.5px; color: #ffffff";> ${token.value} </span>
             `;
         }
 
         return `
-                <span style="background-color: #${colorHex};"> ${token.value} </span>
+                <span style="background-color: #${colorHex};margin: 1.5px;"> ${token.value} </span>
             `;
     }
 

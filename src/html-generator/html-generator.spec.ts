@@ -35,6 +35,7 @@ describe("HtmlGenerator", () => {
         it("Should return page with one div = es sollte eine Webseite mit ein div zurückgeben", () => {
             let generator = new HTMLGenerator();
             let page: string = generator.generatePage([new Token(TokenType.Number, '12')]);
+            console.log(count(page, openingSpanTag))
             assert(count(page, openingSpanTag) == 1);
             assert(count(page, closingSpanTag) == 1);
             assert(page.indexOf(htmlTag) >= 0);
@@ -45,6 +46,8 @@ describe("HtmlGenerator", () => {
         it("Should return page with two divs - different colors = es sollte eine Webseite mit zwei divs zurückgeben - anderen Farben", () => {
             let generator = new HTMLGenerator();
             let page: string = generator.generatePage([new Token(TokenType.Number, '12'), new Token(TokenType.Literal, "aaa")]);
+            console.log(count(page, openingSpanTag))
+
             assert(count(page, openingSpanTag) == 2);
             assert(count(page, closingSpanTag) == 2);
             let colors: string[] = getColors(page);
