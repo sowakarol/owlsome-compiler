@@ -22,71 +22,8 @@ export class BetterScanner {
                     this.index++;
                     break;
                 case /[a-z]/i.test(char):
-                    var isKeyWord = false;
-                    //QUICK VERSION - NEEDS REFACTOR !!
-                    if (char === 'i') {
-                        tokenString = char;
-                        if (this.isNextSymbolEqual('f')) {
-                            tokenString += this.text[++this.index];
-                            isKeyWord = this.isNextSymbolEqual(' ');
-                            if (isKeyWord) {
-                                tokens.push(new Token(TokenType.If, tokenString));
-                            }
-                        }
-                        this.index++;
-                        if (isKeyWord) break;
-                    } else if (char === 'f') {
-                        tokenString = char;
-                        if (this.isNextSymbolEqual('o')) {
-                            tokenString += this.text[++this.index];
-                            if (this.isNextSymbolEqual('r')) {
-                                tokenString += this.text[++this.index];
-                                isKeyWord = this.isNextSymbolEqual(' ');
-                                if (isKeyWord) {
-                                    tokens.push(new Token(TokenType.For, tokenString));
-                                }
-                            }
-                        }
-                        this.index++;
-                        if (isKeyWord) break;
-                    } else if (char === 'w') {
-                        tokenString += char;
-                        if (this.isNextSymbolEqual('h')) {
-                            tokenString += this.text[++this.index];
-                            if (this.isNextSymbolEqual('i')) {
-                                tokenString += this.text[++this.index];
-                                if (this.isNextSymbolEqual('l')) {
-                                    tokenString += this.text[++this.index];
-                                    if (this.isNextSymbolEqual('e')) {
-                                        tokenString += this.text[++this.index];
-                                        isKeyWord = this.isNextSymbolEqual(' ');
-                                        if (isKeyWord) {
-                                            tokens.push(new Token(TokenType.While, tokenString));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        this.index++;
-                        if (isKeyWord) break;
-                    } else if (char === 'v') {
-                            tokenString = char;
-                            if (this.isNextSymbolEqual('a')) {
-                                tokenString += this.text[++this.index];
-                                if (this.isNextSymbolEqual('r')) {
-                                    tokenString += this.text[++this.index];
-                                    isKeyWord = this.isNextSymbolEqual(' ');
-                                    if (isKeyWord) {
-                                        tokens.push(new Token(TokenType.Variable, tokenString));
-                                    }
-                                }
-                            }
-                            this.index++;
-                            if (isKeyWord) break; 
-                    }
-
                     tokenString += this.extractLiteral();
-                    tokens.push(new Token(TokenType.Literal, tokenString));
+                    tokens.push(new Token(this.checkKeyword(tokenString), tokenString));
                     break;
                 case /\d/.test(char):
                     token = this.extractNumber();
@@ -235,6 +172,20 @@ export class BetterScanner {
             }
         } else {
             return new Token(TokenType.AssignOperator, currentChar);
+        }
+    }
+    checkKeyword(checkKeyword:String) :TokenType{
+        switch(checkKeyword){
+            case "for": 
+                return TokenType.For;
+            case "while":
+                return TokenType.While;
+            case "if" :
+                return TokenType.If;
+            case "var":
+                return TokenType.Variable;
+            default:
+                return TokenType.Literal;
         }
     }
 }
