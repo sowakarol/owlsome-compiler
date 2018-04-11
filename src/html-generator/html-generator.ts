@@ -20,7 +20,7 @@ export class HTMLGenerator {
         let page: string;
         page = this.generateHeader();
 
-        page += `<div style="width:100%;>`;
+        page += `<div style="width:100%;">`;
         tokens.forEach(token => {
             page += `${this.generateSpan(token)}`;
         });
@@ -64,6 +64,9 @@ export class HTMLGenerator {
         let tokenNumber = this.map.get(token.type);
         if (tokenNumber) {
             colorHex = tokenNumber.toString(16);
+            if (colorHex.length < 6) {
+                colorHex = `a${colorHex}`
+            }
         }
         if (colorHex <= "800000") {
             return `
