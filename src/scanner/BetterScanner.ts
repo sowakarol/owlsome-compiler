@@ -86,7 +86,7 @@ export class BetterScanner {
                     this.index++;
                     break;
                 default:
-                    tokens.push(new Token(TokenType.NotSupported, char));
+                    tokens.push(this.extractNotSupported());
                     this.index++;
                     break;
             }
@@ -137,23 +137,33 @@ export class BetterScanner {
     }
 
     extractNumber(): Token {
-        let token: Token;
         let tokenString = "";
-        let dotOccurences = 0;
         let char = this.text[this.index];
-        while (char && /\d|\./.test(char)) {
+
+        const digitRegex = new RegExp(/\d/);
+        const decimalRegex = new RegExp(/\d|\./);
+        let matcher = decimalRegex;
+
+        while (char && matcher.test(char)) {
             if (char == '.') {
-                dotOccurences++;
+                matcher = digitRegex;
             }
             tokenString += char;
             char = this.text[++this.index];
         }
-        if (dotOccurences > 1) {
-            token = new Token(TokenType.NotSupported, tokenString);
-        } else {
-            token = new Token(TokenType.Number, tokenString);
+        return new Token(TokenType.Number, tokenString);
+    }
+
+    extractNotSupported(): Token {
+        let tokenString = "";
+        let char = this.text[this.index];
+
+        while (char && !/\s/.test(char)) {
+            tokenString += char;
+            char = this.text[++this.index];
         }
-        return token;
+
+        return new Token(TokenType.NotSupported, tokenString);
     }
 
     scanEqualSigns(): Token {
@@ -174,13 +184,13 @@ export class BetterScanner {
             return new Token(TokenType.AssignOperator, currentChar);
         }
     }
-    checkKeyword(checkKeyword:String) :TokenType{
-        switch(checkKeyword){
-            case "for": 
+    checkKeyword(checkKeyword: String): TokenType {
+        switch (checkKeyword) {
+            case "for":
                 return TokenType.For;
             case "while":
                 return TokenType.While;
-            case "if" :
+            case "if":
                 return TokenType.If;
             case "var":
                 return TokenType.Variable;
