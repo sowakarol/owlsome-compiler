@@ -94,7 +94,7 @@ export class HTMLGenerator {
     generateTokenTable(): string {
 
         const tokenTable: any = {
-            "z{z}": "Literal",
+            "z{z|c}": "Literal",
             "z": "'a'...'Z'",
             "c{c}[.]c{c}": "Number",
             "c": "'0'...'9'",
