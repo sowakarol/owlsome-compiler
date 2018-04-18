@@ -29,6 +29,10 @@ export class BetterScanner {
                     token = this.extractNumber();
                     tokens.push(token);
                     break;
+                case char === ';':
+                    tokens.push(new Token(TokenType.Semicolon, char));
+                    this.index++;
+                    break;
                 case char === '(':
                     tokens.push(new Token(TokenType.LeftParenthesis, char));
                     this.index++;
@@ -194,6 +198,8 @@ export class BetterScanner {
                 return TokenType.If;
             case "var":
                 return TokenType.Variable;
+            case "function":
+                return TokenType.Function;
             default:
                 return TokenType.Literal;
         }

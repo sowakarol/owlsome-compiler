@@ -11,6 +11,8 @@ export enum TokenType {
     LeftParenthesis,
     RightParenthesis,
     For,
+    Semicolon,
+    Function,
     While,
     If,
     EqualOperator,

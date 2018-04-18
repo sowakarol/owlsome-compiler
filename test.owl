@@ -9,6 +9,10 @@ NumberWithMoreThanOneDot = 123.45.56
 "string"
 var eineGuteVariable
 aMozeTak
+
+function asd();
+
+
 "multi
 line
 string?"
