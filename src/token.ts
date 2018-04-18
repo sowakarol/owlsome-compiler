@@ -21,8 +21,7 @@ export enum TokenType {
     EOF,
     NotSupported,
     String,
-    Variable,
-    Operator //to be refactored - stays to avoid compilation problems
+    Variable
 };
 
 export function tokenTypeLength(): number {
