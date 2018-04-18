@@ -21,7 +21,8 @@ export enum TokenType {
     EOF,
     NotSupported,
     String,
-    Variable
+    Variable,
+    Whitespace
 };
 
 export function tokenTypeLength(): number {
@@ -36,7 +37,7 @@ export function tokenTypeLength(): number {
 }
 
 export class Token {
-    constructor(public type: TokenType, public value: string | null) { }
+    constructor(public type: TokenType, public value: string) { }
 
     toString(): string {
         return `(${this.type}) => ${this.value}`

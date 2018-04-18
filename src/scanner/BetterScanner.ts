@@ -19,7 +19,7 @@ export class BetterScanner {
 
             switch (true) {
                 case /\s/.test(char):
-                    this.index++;
+                    tokens.push(this.scanWhitespaces());
                     break;
                 case /[a-z]/i.test(char):
                     tokenString += this.extractLiteral();
@@ -48,8 +48,9 @@ export class BetterScanner {
                     }
                     else {
                         tokens.push(new Token(TokenType.OperatorObelus, char));
+                        this.index++;
+
                     }
-                    this.index++;
                     break;
                 case char === '^':
                     tokens.push(new Token(TokenType.OperatorExponentiation, char));
@@ -203,5 +204,14 @@ export class BetterScanner {
             default:
                 return TokenType.Literal;
         }
+    }
+    scanWhitespaces(): Token {
+        let char: string = this.text[this.index];
+        let tokenString = "";
+        while (/\s/.test(char)) {
+            tokenString += char;
+            char = this.text[++this.index];
+        }
+        return new Token(TokenType.Whitespace, tokenString);
     }
 }

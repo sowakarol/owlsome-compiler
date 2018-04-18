@@ -49,12 +49,24 @@ export class HTMLGenerator {
         </html>`
     }
 
+    generateWhitespaces(token: Token):string{
+        let ret:string = "";
+        token.value.split("").forEach((el) => ret += el === ' '? '&nbsp;': el === '\n'? '<br>' :  '&#8195;');
+        return ret;
+    }
+
     generateSpan(token: Token): string {
         let colorHex: string = "000000";
         if (token.type === TokenType.NotSupported) {
             return `
             <span style="text-decoration: underline wavy red; margin: 1.5px;"> ${token.value} </span>
             `;
+        } 
+        
+        if(token.type === TokenType.Whitespace){
+            return `
+                <span>${this.generateWhitespaces(token)}</span>
+            `
         }
 
         if (token.type === TokenType.String) {

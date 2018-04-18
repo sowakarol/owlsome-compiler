@@ -1,5 +1,4 @@
 import { existsSync, readFile, writeFile } from "fs";
-import { Scanner } from "./scanner/scanner";
 import {BetterScanner} from './scanner/BetterScanner';
 import { HTMLGenerator } from "./html-generator/html-generator";
 
